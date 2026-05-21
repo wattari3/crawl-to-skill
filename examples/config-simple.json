@@ -1,0 +1,5 @@
+{
+  "name": "example-docs",
+  "startUrls": ["https://example.com"],
+  "output": "./output"
+}

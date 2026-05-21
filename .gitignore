@@ -1,0 +1,7 @@
+node_modules/
+dist/
+output/
+.scratch/
+*.log
+storage/
+*.traineddata

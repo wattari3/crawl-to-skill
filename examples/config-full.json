@@ -1,0 +1,47 @@
+{
+  "name": "crawlee-docs",
+  "startUrls": [
+    "https://crawlee.dev/docs/introduction",
+    "https://crawlee.dev/docs/guides"
+  ],
+  "output": "./output",
+  "crawl": {
+    "depth": 2,
+    "maxRequests": 100,
+    "globs": ["https://crawlee.dev/docs/**"],
+    "exclude": [
+      "https://crawlee.dev/blog/**",
+      "https://crawlee.dev/api/legacy/**",
+      "**/*.pdf"
+    ],
+    "maxRetries": 3,
+    "navigationTimeoutSecs": 60,
+    "requestHandlerTimeoutSecs": 120
+  },
+  "content": {
+    "useReadability": true,
+    "contentSelector": null,
+    "removeSelectors": ["nav", "footer", "aside", ".cookie-banner", ".ad"]
+  },
+  "images": {
+    "download": true,
+    "maxWidthPx": 2048,
+    "ocr": true,
+    "ocrLanguages": ["eng", "jpn"],
+    "excludePatterns": ["**/tracking/**", "**/pixel/**"]
+  },
+  "auth": {
+    "loginUrl": "https://example.com/login",
+    "steps": [
+      { "action": "fill", "selector": "#email", "value": "${LOGIN_EMAIL}" },
+      { "action": "fill", "selector": "#password", "value": "${LOGIN_PASSWORD}" },
+      { "action": "click", "selector": "button[type=submit]" },
+      { "action": "waitForNavigation" }
+    ],
+    "successCheck": {
+      "selector": ".dashboard",
+      "expectedText": "ようこそ"
+    },
+    "storageStateTTLMinutes": 60
+  }
+}
