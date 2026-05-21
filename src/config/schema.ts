@@ -54,6 +54,14 @@ const ImageOptionsSchema = z.object({
   excludePatterns: z.array(z.string()).default([...DEFAULTS.images.excludePatterns]),
 }).default({});
 
+// RAG設定スキーマ
+const RagOptionsSchema = z.object({
+  chunkSize: z.number().int().positive().default(DEFAULTS.rag.chunkSize),
+  chunkOverlap: z.number().int().min(0).default(DEFAULTS.rag.chunkOverlap),
+  minOcrConfidence: z.number().int().min(0).max(100).default(DEFAULTS.rag.minOcrConfidence),
+  maxOcrWorkers: z.number().int().positive().default(DEFAULTS.rag.maxOcrWorkers),
+}).default({});
+
 // メイン設定スキーマ
 export const ConfigSchema = z.object({
   name: z.string().min(1).optional(),
@@ -62,8 +70,10 @@ export const ConfigSchema = z.object({
   crawl: CrawlOptionsSchema,
   content: ContentOptionsSchema,
   images: ImageOptionsSchema,
+  rag: RagOptionsSchema,
   auth: AuthConfigSchema,
 }).strict();
 
 export type CrawlConfig = z.infer<typeof ConfigSchema>;
 export type AuthStep = z.infer<typeof AuthStepSchema>;
+

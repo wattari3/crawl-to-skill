@@ -114,7 +114,7 @@ program
       let textChunksCount = 0;
       let ocrChunksCount = 0;
 
-      const indexer = new RagIndexer(tempRagIndexPath, skillName);
+      const indexer = new RagIndexer(tempRagIndexPath, skillName, config);
 
       // 各ページをDatasetから1件ずつ処理（OOM対策）
       logger.info('📝 コンテンツを変換中...');

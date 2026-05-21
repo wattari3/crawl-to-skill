@@ -3,7 +3,6 @@ import Tesseract from 'tesseract.js';
 import { type ImageEntry, type OcrResult } from '../types.js';
 import { type CrawlConfig } from '../config/schema.js';
 import { type Logger } from '../utils/logger.js';
-import { DEFAULTS } from '../config/defaults.js';
 
 /**
  * 画像一覧に対してOCR処理を行い、テキスト抽出結果を返す
@@ -18,12 +17,12 @@ export async function runOcr(
 
   const ocrResults: OcrResult[] = [];
   const languages = config.images.ocrLanguages.join('+');
-  const minConfidence = DEFAULTS.rag.minOcrConfidence;
+  const minConfidence = config.rag.minOcrConfidence;
 
   logger.info(`OCR処理開始: ${imageEntries.length} 件, 言語: ${languages}`);
 
   // Tesseract.js はワーカーを使って並列処理
-  const workerCount = Math.min(imageEntries.length, DEFAULTS.rag.maxOcrWorkers);
+  const workerCount = Math.min(imageEntries.length, config.rag.maxOcrWorkers);
   const scheduler = Tesseract.createScheduler();
   const workers: Tesseract.Worker[] = [];
 

@@ -134,6 +134,7 @@ npx tsx src/index.ts crawl -c examples/config-full.json --verbose
 | `content` | `object` | `{}` | ページからのテキスト抽出に関する詳細設定（以下参照）。 |
 | `images` | `object` | `{}` | 画像取得・リサイズ・OCRに関する詳細設定（以下参照）。 |
 | `auth` | `object` | — | クロール前の自動ログインに関する詳細設定（任意。以下参照）。 |
+| `rag` | `object` | `{}` | RAGインデックス生成およびOCRの並列処理に関する詳細設定（以下参照）。 |
 
 ---
 
@@ -222,14 +223,16 @@ npx tsx src/index.ts crawl -c examples/config-full.json --verbose
 
 ---
 
-### 内部 RAG パラメータ（デフォルト値）
+### `rag` パラメータ（RAG・インデックス設定）
 
-設定ファイルでは現在変更できませんが、RAGインデックス（`rag/index.jsonl`）の生成時に以下の定数（`defaults.ts`）が内部で適用されます。
+RAG用のテキストチャンク分割および画像OCR処理時の並列実行数などに関する詳細設定です。
 
-- **`rag.chunkSize`** (`1000`): テキストおよびOCR結果をRAGチャンクに分割する際の目安となる文字数。
-- **`rag.chunkOverlap`** (`200`): 分割されたチャンク間の重複文字数。
-- **`rag.minOcrConfidence`** (`30`): 画像OCRのテキストをインデックスに含めるかどうかの最低信頼度スコア（パーセント）。これ未満のOCR結果は「不鮮明な画像」としてインデックスから除外され、検索時のノイズを防ぎます。
-- **`rag.maxOcrWorkers`** (`4`): WASM OCRの同時実行数上限。CPU負荷とメモリ消費のバランスを取るために `4` に制限されています（実際のタスク数とこの上限値のうち小さい方が並列実行スレッド数になります）。
+| キー | 型 | デフォルト値 | 説明 |
+|---|---|---|---|
+| `chunkSize` | `number` | `1000` | テキストおよびOCR結果をRAGチャンクに分割する際の最大文字数。 |
+| `chunkOverlap` | `number` | `200` | 分割されたチャンク間の重複（オーバーラップ）文字数。 |
+| `minOcrConfidence`| `number` | `30` | 画像OCR結果をインデックスに含めるかどうかの最低信頼度スコア（パーセント）。これ未満のOCR結果はインデックスから除外されます。 |
+| `maxOcrWorkers` | `number` | `4` | WASM OCR処理で使用する Tesseract Worker の最大並列数（CPUコア数や画像数等に応じて自動的に制限されます）。 |
 
 ---
 

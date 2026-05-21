@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import { type RagChunk, type OcrResult, type RagIndexMetadata } from '../types.js';
-import { DEFAULTS } from '../config/defaults.js';
+import { type CrawlConfig } from '../config/schema.js';
 
 export interface PageData {
   sourceFile: string;
@@ -74,10 +74,11 @@ export class RagIndexer {
 
   constructor(
     private readonly outputPath: string,
-    skillName: string
+    skillName: string,
+    config: CrawlConfig
   ) {
-    this.chunkSize = DEFAULTS.rag.chunkSize;
-    this.chunkOverlap = DEFAULTS.rag.chunkOverlap;
+    this.chunkSize = config.rag.chunkSize;
+    this.chunkOverlap = config.rag.chunkOverlap;
 
     // ファイルを初期化し、メタデータを1行目に書き込む
     const metadata: RagIndexMetadata = {
